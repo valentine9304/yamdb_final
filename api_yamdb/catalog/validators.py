@@ -4,10 +4,6 @@ from django.utils import timezone
 
 def validate_year(value):
     if value > timezone.now().year:
-        raise ValidationError(
-            f'{value} — некорректный год'
-        )
+        raise ValidationError(f"{value} — некорректный год")
     elif value < 1:
-        raise ValidationError(
-            f'{value} — некорректный год'
-        )
+        raise ValidationError(f"{value} — некорректный год")
