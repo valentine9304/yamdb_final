@@ -48,6 +48,7 @@ jobs:
         # Пуш образа в Docker Hub d
         uses: docker/build-push-action@v2 
         with:
+          context: ./api_yamdb
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/infra_actions:latest
 
