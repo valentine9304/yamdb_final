@@ -13,7 +13,7 @@ services:
     env_file:
       - ./.env
   web:
-    build: ../api_yamdb
+    image: valentine9304/infra_actions:latest
     restart: always
     volumes:
       - static_value:/app/static/
