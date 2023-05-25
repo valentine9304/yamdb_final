@@ -1,6 +1,7 @@
 #!/bin/bash
 
-echo "Make migrations catalog"
+
+echo "Make migrations cataloga"
 python manage.py makemigrations catalog
 
 echo "Make migrations reviews"
