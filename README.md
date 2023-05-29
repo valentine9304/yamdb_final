@@ -29,12 +29,22 @@
 + Модератор (moderator) — те же права, что и у Аутентифицированного пользователя плюс право удалять любые отзывы и комментарии.
 + Администратор (admin) — полные права на управление всем контентом проекта. Может создавать и удалять произведения, категории и жанры. Может назначать роли пользователям.
 
-### Как запустить проект:
+### Установка Docker
+Установите Docker, используя инструкции с официального сайта:
+- для [Windows и MacOS](https://www.docker.com/products/docker-desktop)
+- для [Linux](https://docs.docker.com/engine/install/ubuntu/). Отдельно потребуется установть [Docker Compose](https://docs.docker.com/compose/install/)
 
-Клонировать репозиторий:
+### Запуск проекта (на примере Linux)
 
+- Создайте на своем компютере папку проекта YamDb `mkdir yamdb` и перейдите в нее `cd yamdb`
+- Склонируйте этот репозиторий в текущую папку `git clone git@github.com:valentine9304/yamdb_final.git .`
+- Создайте файл `.env` командой `touch .env` и добавьте в него переменные окружения для работы с базой данных:
 ```
-git clone git@github.com:valentine9304/yamdb_final.git
+DB_NAME=postgres # имя базы данных
+POSTGRES_USER=postgres # логин для подключения к базе данных
+POSTGRES_PASSWORD=postgres # пароль для подключения к БД (установите свой)
+DB_HOST=db # название сервиса (контейнера)
+DB_PORT=5432 # порт для подключения к БД 
 ```
 
 Перейти в папку infra и запустить docker-compose.yaml
@@ -57,8 +67,37 @@ docker-compose exec web python manage.py createsuperuser
 ```
 
 Проверьте работоспособность приложения, для этого перейдите на страницу:
+```
+http://84.252.128.99/admin/
+http://84.252.128.99/api/v1/
+```
 
+## Деплой на удаленный сервер
+Для запуска проекта на удаленном сервере необходимо:
+- скопировать на сервер файлы `docker-compose.yaml`, `.env` и папку `nginx` командами:
+```
+scp docker-compose.yaml  <user>@<server-ip>:
+scp .env <user>@<server-ip>:
+scp -r nginx/ <user>@<server-ip>:
 
+```
+- создать переменные окружения в разделе `secrets` настроек текущего репозитория:
+```
+DOCKER_PASSWORD # Пароль от Docker Hub
+DOCKER_USERNAME # Логин от Docker Hub
+HOST # Публичный ip адрес сервера
+USER # Пользователь зарегистрированный на сервере
+PASSPHRASE # Если ssh-ключ защищен фразой-паролем
+SSH_KEY # Приватный ssh-ключ
+TELEGRAM_TO # ID телеграм-аккаунта
+TELEGRAM_TOKEN # Токен бота
+```
+
+### После каждого обновления репозитория (`git push`) будет происходить:
+1. Проверка кода на соответствие стандарту PEP8 (с помощью пакета flake8) и запуск pytest из репозитория yamdb_final
+2. Сборка и доставка докер-образов на Docker Hub.
+3. Автоматический деплой.
+4. Отправка уведомления в Telegram.
 
 ### Примеры API запросов:
 + [POST] /api/v1/auth/signup/ - Регистрация нового пользователя
