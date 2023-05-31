@@ -47,7 +47,8 @@ DB_NAME=postgres # имя базы данных
 POSTGRES_USER=postgres # логин для подключения к базе данных
 POSTGRES_PASSWORD=postgres # пароль для подключения к БД (установите свой)
 DB_HOST=db # название сервиса (контейнера)
-DB_PORT=5432 # порт для подключения к БД 
+DB_PORT=5432 # порт для подключения к БД
+SECRET_KEY= #Указываем Secret Key , который прописываем в settings.py
 ```
 
 Перейти в папку infra и запустить docker-compose.yaml
